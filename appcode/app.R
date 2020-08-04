@@ -179,39 +179,37 @@ last_mile_score <- function(c,s){
     return(lml_score)
 }
 
-
 #Define UI for app  ----
 ui <- fluidPage(
+  
+  # App title ----
+  titlePanel("Last Mile Score Predictor"),
+  
+  # Sidebar layout with input and output definitions ----
+  sidebarLayout(
     
-    # App title ----
-    titlePanel("Last Mile Score Predictor"),
+    # Sidebar panel for inputs ----
+    sidebarPanel(
+      
+      # Input: Slider for the inputs ----
+      textInput("lat","Enter latitude"),
+      textInput("long","Enter longitude"),
+      textInput("srid","Enter SRID")
+      
+    ),
     
-    # Sidebar layout with input and output definitions ----
-    sidebarLayout(
-        
-        # Sidebar panel for inputs ----
-        sidebarPanel(
-            
-            # Input: Slider for the inputs ----
-            textInput("coord","Input coordinates"),
-            textInput("srid","Input SRID")
-            
-        ),
-        
-        # Main panel for displaying outputs ----
-        mainPanel(
-            paste("The last mile score is"),
-            textOutput("txtOutput")
-        )
+    # Main panel for displaying outputs ----
+    mainPanel(
+      paste("The last mile score is"),
+      textOutput("txtOutput")
     )
-)
+  )
+)  
 
 server <- shinyServer(function(input,output) {
-    
-    ({})
-    output$txtOutput <- renderText({
-        paste(last_mile_score(input$coord,input$srid) )
-    })
+  output$txtOutput <- renderText({
+    paste(last_mile_score(paste(input$long,input$lat,sep =","),input$srid) )
+  })
 })
 
 shinyApp(ui=ui,server=server)
